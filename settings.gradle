@@ -1,0 +1,2 @@
+rootProject.name='BDO Boss Timer'
+include ':app'
