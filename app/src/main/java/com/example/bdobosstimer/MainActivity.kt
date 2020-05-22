@@ -1,21 +1,19 @@
 package com.example.bdobosstimer
 
-import android.opengl.Visibility
+import android.os.AsyncTask
 import android.os.Bundle
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
-    //uwu!
+class MainActivity : AppCompatActivity(), SynchronizedActivity{
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        updateBoss()
+        synchronize()
     }
 
     private fun updateBoss() {
@@ -35,10 +33,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onButtonClicked(view: View){
-        if (view.id == R.id.main_button_refresh){
-            updateBoss()
+    override fun synchronize() {
+        updateBoss()
+        BossRefresher(this).execute()
+    }
+
+    class BossRefresher(private val synchronizedActivity: SynchronizedActivity) : AsyncTask<Void, Void, Void>() {
+
+        override fun doInBackground(vararg params: Void?): Void?{
+            Thread.sleep(10000)
+            return null
         }
 
+        override fun onPostExecute(result: Void?) {
+            synchronizedActivity.synchronize()
+        }
     }
 }

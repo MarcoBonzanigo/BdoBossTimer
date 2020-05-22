@@ -2,5 +2,5 @@
     <string name="app_name">BDO Boss Timer</string>
     <string name="abc">ABC</string>
     <string name="weekday">"Current day of the Week: %1$d, Hour  %2$d"</string>
-    <string name="nextBossAnnounce">"Next Boss to spawn is %1$s,%nIt spawns at %2$s%nThat's in %3$d minutes!"</string>
+    <string name="nextBossAnnounce">"Next Boss to spawn is %1$s!%nIt spawns at %2$s o' clock!%nThat's in %3$d minutes!"</string>
 </resources>
