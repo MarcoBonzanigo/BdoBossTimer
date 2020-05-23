@@ -50,9 +50,11 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         val nextBoss = BossHelper.instance.getNextBoss()
         main_text_boss_title.text = getString(
             R.string.nextBossAnnounce,
+            if (nextBoss.name.contains("&")) "es" else "",
+            if (nextBoss.name.contains("&")) "are" else "is",
             nextBoss.name,
             nextBoss.timeSpawn,
-            nextBoss.minutesToSpawn
+            TimeHelper().minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
         )
         main_image_boss_one.setImageResource(nextBoss.bossOneImageResource!!)
         if (nextBoss.bossTwoImageResource != null) {
