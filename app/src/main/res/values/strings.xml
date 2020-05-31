@@ -3,4 +3,5 @@
     <string name="abc">ABC</string>
     <string name="weekday">"Current day of the Week: %1$d, Hour  %2$d"</string>
     <string name="nextBossAnnounce">"Next Boss%1$s  to spawn %2$s %3$s!%n Spawn Time is at %4$s o' clock!%nThat's in %5$s!"</string>
+    <string name="previousBossAnnounce">" %1$s  ago!"</string>
 </resources>

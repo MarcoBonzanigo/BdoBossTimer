@@ -1,12 +1,10 @@
 package com.example.bdobosstimer
 
-import android.app.NotificationManager
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import com.example.bdobosstimer.MainActivity.BossRefresher
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -48,6 +46,18 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     private fun updateBoss() {
         val nextBoss = BossHelper.instance.getNextBoss()
+        val previousBoss = BossHelper.instance.getPreviousBoss()
+        //Previous Boss
+        main_text_boss_title_previous.text = getString(
+            R.string.previousBossAnnounce,TimeHelper().minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
+        main_image_boss_previous_one.setImageResource(previousBoss.bossOneImageResource!!)
+        if (previousBoss.bossTwoImageResource != null) {
+            main_image_boss_previous_two.visibility = VISIBLE
+            main_image_boss_previous_two.setImageResource(previousBoss.bossTwoImageResource!!)
+        } else {
+            main_image_boss_previous_two.visibility = GONE
+        }
+        //Next Boss
         main_text_boss_title.text = getString(
             R.string.nextBossAnnounce,
             if (nextBoss.name.contains("&")) "es" else "",

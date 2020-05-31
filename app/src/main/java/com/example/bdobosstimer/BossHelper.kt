@@ -65,13 +65,34 @@ class BossHelper private constructor() {
          val now = getTimeOfDay()
          for ((pointer, time) in timeIntGrid.withIndex()){
             if (time > now && bossGrid[getDayOfTheWeek()][pointer] != empty){
-                return resolveBoss(time, now, pointer, getDayOfTheWeek())
+                return resolveBoss(now, pointer, getDayOfTheWeek())
             }
          }
-         return resolveBoss(timeIntGrid[0], now-2400, 0, getDayOfTheWeek()+1)
+         return resolveBoss(now-2400, 0, getDayOfTheWeek()+1)
      }
 
-    private fun resolveBoss(time: Int,now: Int, pointer: Int, timeOfWeek: Int): Boss {
+
+    fun getPreviousBoss(): Boss{
+        val now = getTimeOfDay()
+        for ((pointer, time) in timeIntGrid.withIndex()){
+            if (time > now){
+                return if ( pointer > 0) {
+                    resolveBoss(now, pointer - 1, getDayOfTheWeek())
+                }else{
+                    var backPointer=1
+                    while(bossGrid[getDayOfTheWeek()-1][timeIntGrid.size-backPointer] == empty){
+                        backPointer++
+                    }
+                    resolveBoss(2400+now, timeIntGrid.size-backPointer, getDayOfTheWeek()-1)
+                }
+            }
+        }
+        return resolveBoss(2400+now, timeIntGrid.size-1, getDayOfTheWeek()-1)
+    }
+
+
+    private fun resolveBoss(now: Int, pointer: Int, timeOfWeek: Int): Boss {
+        val time = timeIntGrid[pointer]
         val timeDiff = ((time - now) * 0.6).toInt()
         val timeSpawn = timeGrid[pointer]
         val bossName = bossGrid[timeOfWeek][pointer]
