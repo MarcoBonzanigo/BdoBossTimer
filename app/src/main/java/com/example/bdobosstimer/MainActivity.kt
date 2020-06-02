@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bdobosstimer.MainActivity.BossRefresher
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,11 +25,6 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences(id, Context.MODE_PRIVATE)
-
-        //Hasi-Example for shared Preferences
-        val testValueWrite = 1
-        sharedPreferences.edit().putInt(testKey,testValueWrite).apply()
-        val  testValueRead = sharedPreferences.getInt(testKey,0)
     }
 
     override fun onPause() {
@@ -60,6 +56,15 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     private fun updateBoss() {
         val nextBoss = BossHelper.instance.getNextBoss()
         val previousBoss = BossHelper.instance.getPreviousBoss()
+        //Bartering
+        val  nextBarterTimeMinutes = sharedPreferences.getInt(nextBarterTime,0)
+        val timeDifferenceToNow = TimeHelper.getTimeDifferenceToNow(nextBarterTimeMinutes)
+        if (nextBarterTimeMinutes == 0 || timeDifferenceToNow<0){
+            main_text_barter_title.text = getString(R.string.reset_available)
+            sharedPreferences.edit().putInt(nextBarterTime,0).apply()
+        }else{
+            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(timeDifferenceToNow))
+        }
         //Previous Boss
         main_text_boss_title_previous.text = getString(
             R.string.previousBossAnnounce,TimeHelper.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
@@ -88,6 +93,24 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         }
     }
 
+    var barterResetCounter = 0
+
+    fun onBarterButtonClick(view: View) {
+        val  nextBarterTimeMinutes = sharedPreferences.getInt(nextBarterTime,0)
+        if (nextBarterTimeMinutes == 0){
+            val timeOfDay = TimeHelper.getTimeOfDay()+400
+            sharedPreferences.edit().putInt(nextBarterTime,timeOfDay).apply()
+            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(240))
+        }else{
+            barterResetCounter++
+        }
+        if (barterResetCounter==3){
+            barterResetCounter=0
+            sharedPreferences.edit().putInt(nextBarterTime,0).apply()
+            main_text_barter_title.text = getString(R.string.reset_available)
+            Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun bossSettingChanged(view: View) {
         when (view.id) {
@@ -134,5 +157,6 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             synchronizedActivity.synchronize()
         }
     }
+
 
 }
