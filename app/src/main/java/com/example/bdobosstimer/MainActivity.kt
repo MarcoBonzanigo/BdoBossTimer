@@ -1,7 +1,10 @@
 package com.example.bdobosstimer
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
@@ -10,11 +13,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 private var refresher: BossRefresher? = null
+private const val id = "bdo_boss_timer"
+private lateinit var sharedPreferences: SharedPreferences
+private const val nextBarterTime = "next_barter_time"
+private const val testKey = "test_key"
+
 class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = getSharedPreferences(id, Context.MODE_PRIVATE)
+
+        //Hasi-Example for shared Preferences
+        val testValueWrite = 1
+        sharedPreferences.edit().putInt(testKey,testValueWrite).apply()
+        val  testValueRead = sharedPreferences.getInt(testKey,0)
     }
 
     override fun onPause() {
@@ -42,7 +56,6 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         refresher = BossRefresher(this)
         refresher!!.execute()
     }
-
 
     private fun updateBoss() {
         val nextBoss = BossHelper.instance.getNextBoss()
@@ -75,6 +88,41 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         }
     }
 
+
+    fun bossSettingChanged(view: View) {
+        when (view.id) {
+            R.id.main_image_boss_setting_kzarka -> {
+
+            }
+            R.id.main_image_boss_setting_karanda -> {
+
+            }
+            R.id.main_image_boss_setting_nouver -> {
+
+            }
+            R.id.main_image_boss_setting_kutum -> {
+
+            }
+            R.id.main_image_boss_setting_offin -> {
+
+            }
+            R.id.main_image_boss_setting_muraka -> {
+
+            }
+            R.id.main_image_boss_setting_quint -> {
+
+            }
+            R.id.main_image_boss_setting_garmoth -> {
+
+            }
+            R.id.main_image_boss_setting_vell -> {
+
+            }
+        }
+    }
+
+
+
     class BossRefresher(private val synchronizedActivity: SynchronizedActivity) : AsyncTask<Void, Void, Void>() {
 
         override fun doInBackground(vararg params: Void?): Void?{
@@ -86,4 +134,5 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             synchronizedActivity.synchronize()
         }
     }
+
 }

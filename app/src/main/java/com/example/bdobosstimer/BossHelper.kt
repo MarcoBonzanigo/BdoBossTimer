@@ -43,23 +43,27 @@ class BossHelper private constructor() {
     }
 
 
-    fun normalizeDayOfTheWeek(weekDay: Int): Int {
-        val alteredWeekDay = weekDay-2
+    fun normalizeDayOfTheWeek(weekDay: Int, addDays: Int = 0): Int {
+        val alteredWeekDay = (weekDay+addDays)%7-2
         return if (alteredWeekDay < 0) alteredWeekDay + 7 else alteredWeekDay
     }
 
-    private fun getDayOfTheWeek(): Int {
+    private fun getDayOfTheWeek(addDays: Int = 0): Int {
         val calendar = Calendar.getInstance()
         val weekDay = calendar.get(Calendar.DAY_OF_WEEK)
-        return normalizeDayOfTheWeek(weekDay)
+        return normalizeDayOfTheWeek(weekDay,addDays)
     }
 
-    private fun getTimeOfDay(): Int {
+    fun getTimeOfDay(): Int {
         val calendar = Calendar.getInstance()
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
         val minuteOfTheDay = calendar.get(Calendar.MINUTE)
         return hourOfDay*100+ ceil(minuteOfTheDay*1.6667).toInt()
     }
+
+    fun getTimeDifference(time: Int, now: Int) = ((time - now) * 0.6).toInt()
+
+    fun getTimeDifferenceToNow(time: Int) = getTimeDifference(time, getTimeOfDay())
 
      fun getNextBoss(): Boss{
          val now = getTimeOfDay()
@@ -68,7 +72,7 @@ class BossHelper private constructor() {
                 return resolveBoss(now, pointer, getDayOfTheWeek())
             }
          }
-         return resolveBoss(now-2400, 0, getDayOfTheWeek()+1)
+         return resolveBoss(now-2400, 0, getDayOfTheWeek(1))
      }
 
 
@@ -83,19 +87,19 @@ class BossHelper private constructor() {
                     while(bossGrid[getDayOfTheWeek()-1][timeIntGrid.size-backPointer] == empty){
                         backPointer++
                     }
-                    resolveBoss(2400+now, timeIntGrid.size-backPointer, getDayOfTheWeek()-1)
+                    resolveBoss(2400+now, timeIntGrid.size-backPointer, getDayOfTheWeek(-1))
                 }
             }
         }
-        return resolveBoss(2400+now, timeIntGrid.size-1, getDayOfTheWeek()-1)
+        return resolveBoss(2400+now, timeIntGrid.size-1, getDayOfTheWeek(-1))
     }
 
 
-    private fun resolveBoss(now: Int, pointer: Int, timeOfWeek: Int): Boss {
+    private fun resolveBoss(now: Int, pointer: Int, dayOfWeek: Int): Boss {
         val time = timeIntGrid[pointer]
-        val timeDiff = ((time - now) * 0.6).toInt()
+        val timeDiff = getTimeDifference(time, now)
         val timeSpawn = timeGrid[pointer]
-        val bossName = bossGrid[timeOfWeek][pointer]
+        val bossName = bossGrid[dayOfWeek][pointer]
         return Boss(bossName, timeSpawn, timeDiff)
     }
 
