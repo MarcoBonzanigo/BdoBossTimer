@@ -41,4 +41,9 @@ class TimeHelperTest {
          assertEquals(60, TimeHelper.getTimeDifference(2500, 2400))
          assertEquals(30, TimeHelper.getTimeDifference(2500, 50))
      }
+
+    @Test
+    fun testHundredToSixtyConversion(){
+        assertEquals("01:15", TimeHelper.hundredToSixtyFormat(2525))
+    }
 }

@@ -33,6 +33,14 @@ class TimeHelper {
         fun getTimeDifference(time: Int, now: Int) = ((if (time>2400 && time-now>2400) (time%2400-now) else (time - now)) * 0.6).toInt()
 
         fun getTimeDifferenceToNow(time: Int) = getTimeDifference(time, getTimeOfDay())
+
+        fun hundredToSixtyFormat(hundredTime: Int): String? {
+            val hours = hundredTime%2400/100
+            val minutes = ((hundredTime-(hundredTime/100)*100)*0.6).toInt()
+            val hoursStr = if (hours<10) "0$hours" else "$hours"
+            val minutesStr = if (minutes<10) "0$minutes" else "$minutes"
+            return "$hoursStr:$minutesStr"
+        }
     }
 
 }

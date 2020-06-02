@@ -17,7 +17,9 @@ private var refresher: BossRefresher? = null
 private const val id = "bdo_boss_timer"
 private lateinit var sharedPreferences: SharedPreferences
 private const val nextBarterTime = "next_barter_time"
-private const val testKey = "test_key"
+private const val parleyReduction = "parley_reduction"
+private var bossOneMessage = ""
+private var bossTwoMessage = ""
 
 class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
@@ -57,13 +59,16 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         val nextBoss = BossHelper.instance.getNextBoss()
         val previousBoss = BossHelper.instance.getPreviousBoss()
         //Bartering
-        val  nextBarterTimeMinutes = sharedPreferences.getInt(nextBarterTime,0)
-        val timeDifferenceToNow = TimeHelper.getTimeDifferenceToNow(nextBarterTimeMinutes)
-        if (nextBarterTimeMinutes == 0 || timeDifferenceToNow<0){
+        val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
+        val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100/12).toInt()
+        val nextBarterTimeTotal = nextBarterTimeAbsolute-totalParleyReduction
+        val timeDifferenceToNow = TimeHelper.getTimeDifferenceToNow(nextBarterTimeTotal)
+        if (nextBarterTimeAbsolute == 0 || timeDifferenceToNow<0){
             main_text_barter_title.text = getString(R.string.reset_available)
             sharedPreferences.edit().putInt(nextBarterTime,0).apply()
+            sharedPreferences.edit().putInt(parleyReduction,0).apply()
         }else{
-            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(timeDifferenceToNow))
+            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(timeDifferenceToNow), TimeHelper.hundredToSixtyFormat(nextBarterTimeTotal))
         }
         //Previous Boss
         main_text_boss_title_previous.text = getString(
@@ -96,19 +101,59 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     var barterResetCounter = 0
 
     fun onBarterButtonClick(view: View) {
-        val  nextBarterTimeMinutes = sharedPreferences.getInt(nextBarterTime,0)
-        if (nextBarterTimeMinutes == 0){
+        val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
+        if (nextBarterTimeHundreds == 0){
             val timeOfDay = TimeHelper.getTimeOfDay()+400
             sharedPreferences.edit().putInt(nextBarterTime,timeOfDay).apply()
-            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(240))
+            sharedPreferences.edit().putInt(parleyReduction,0).apply()
+            updateBoss()
         }else{
             barterResetCounter++
         }
         if (barterResetCounter==3){
-            barterResetCounter=0
+            barterResetCounter = 0
             sharedPreferences.edit().putInt(nextBarterTime,0).apply()
+            sharedPreferences.edit().putInt(parleyReduction,0).apply()
             main_text_barter_title.text = getString(R.string.reset_available)
             Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    var parleyToast: Toast? = null
+
+    fun onParleyReductionButtonClick(view: View) {
+        val  parleyReductions = sharedPreferences.getInt(parleyReduction,0)+1
+        sharedPreferences.edit().putInt(parleyReduction,parleyReductions).apply()
+        parleyToast?.cancel()
+        parleyToast = Toast.makeText(this, "Parley Reductions total: $parleyReductions", Toast.LENGTH_SHORT)
+        parleyToast?.show()
+        updateBoss()
+    }
+
+    fun onParleyIncreaseButtonClick(view: View) {
+        val  parleyReductions = sharedPreferences.getInt(parleyReduction,0)-1
+        if (parleyReductions>=0){
+            sharedPreferences.edit().putInt(parleyReduction,parleyReductions).apply()
+            parleyToast?.cancel()
+            parleyToast = Toast.makeText(this, "Parley Reductions total: $parleyReductions", Toast.LENGTH_SHORT)
+            parleyToast?.show()
+            updateBoss()
+        }
+    }
+
+    fun onBossClicked(view: View) {
+        when (view.id) {
+            R.id.main_image_boss_one -> {
+                if (bossOneMessage.length > 0){
+                    Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            R.id.main_image_boss_two -> {
+                if (bossTwoMessage.length > 0){
+                    Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -157,6 +202,5 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             synchronizedActivity.synchronize()
         }
     }
-
 
 }
