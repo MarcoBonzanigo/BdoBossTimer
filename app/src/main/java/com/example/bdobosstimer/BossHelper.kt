@@ -56,7 +56,7 @@ class BossHelper private constructor() {
     fun getPreviousBoss(): Boss{
         val now = TimeHelper.getTimeOfDay()
         for ((pointer, time) in timeIntGrid.withIndex()){
-            if (time > now){
+            if (time > now || pointer+1 == timeIntGrid.size){
                 return if ( pointer > 0) {
                     resolveBoss(now, pointer - 1, TimeHelper.getDayOfTheWeek())
                 }else{
@@ -68,7 +68,7 @@ class BossHelper private constructor() {
                 }
             }
         }
-        return resolveBoss(2400+now, timeIntGrid.size-1, TimeHelper.getDayOfTheWeek(-1))
+        return resolveBoss(2400+now, timeIntGrid.size-1, TimeHelper.getDayOfTheWeek())
     }
 
 
