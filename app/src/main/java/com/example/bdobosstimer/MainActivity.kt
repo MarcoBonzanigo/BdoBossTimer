@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         val previousBoss = BossHelper.instance.getPreviousBoss()
         //Previous Boss
         main_text_boss_title_previous.text = getString(
-            R.string.previousBossAnnounce,TimeHelper().minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
+            R.string.previousBossAnnounce,TimeHelper.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
         main_image_boss_previous_one.setImageResource(previousBoss.bossOneImageResource!!)
         if (previousBoss.bossTwoImageResource != null) {
             main_image_boss_previous_two.visibility = VISIBLE
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             if (nextBoss.name.contains("&")) "are" else "is",
             nextBoss.name,
             nextBoss.timeSpawn,
-            TimeHelper().minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
+            TimeHelper.minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
         )
         main_image_boss_one.setImageResource(nextBoss.bossOneImageResource!!)
         if (nextBoss.bossTwoImageResource != null) {
