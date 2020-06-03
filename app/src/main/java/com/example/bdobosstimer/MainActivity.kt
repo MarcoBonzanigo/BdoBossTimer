@@ -62,17 +62,17 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
         val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100/12).toInt()
         val nextBarterTimeTotal = nextBarterTimeAbsolute-totalParleyReduction
-        val timeDifferenceToNow = TimeHelper.getTimeDifferenceToNow(nextBarterTimeTotal)
+        val timeDifferenceToNow = TimeHelper.instance.getTimeDifferenceToNow(nextBarterTimeTotal)
         if (nextBarterTimeAbsolute == 0 || timeDifferenceToNow<0){
             main_text_barter_title.text = getString(R.string.reset_available)
             sharedPreferences.edit().putInt(nextBarterTime,0).apply()
             sharedPreferences.edit().putInt(parleyReduction,0).apply()
         }else{
-            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.minutesToHoursAndMinutes(timeDifferenceToNow), TimeHelper.hundredToSixtyFormat(nextBarterTimeTotal))
+            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.instance.minutesToHoursAndMinutes(timeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
         }
         //Previous Boss
         main_text_boss_title_previous.text = getString(
-            R.string.previousBossAnnounce,TimeHelper.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
+            R.string.previousBossAnnounce,TimeHelper.instance.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
         main_image_boss_previous_one.setImageResource(previousBoss.bossOneImageResource!!)
         if (previousBoss.bossTwoImageResource != null) {
             main_image_boss_previous_two.visibility = VISIBLE
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             if (nextBoss.name.contains("&")) "are" else "is",
             nextBoss.name,
             nextBoss.timeSpawn,
-            TimeHelper.minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
+            TimeHelper.instance.minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
         )
         main_image_boss_one.setImageResource(nextBoss.bossOneImageResource!!)
         if (nextBoss.bossTwoImageResource != null) {
@@ -98,12 +98,12 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         }
     }
 
-    var barterResetCounter = 0
+    private var barterResetCounter = 0
 
     fun onBarterButtonClick(view: View) {
         val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
         if (nextBarterTimeHundreds == 0){
-            val timeOfDay = TimeHelper.getTimeOfDay()+400
+            val timeOfDay = TimeHelper.instance.getTimeOfTheDay()+400
             sharedPreferences.edit().putInt(nextBarterTime,timeOfDay).apply()
             sharedPreferences.edit().putInt(parleyReduction,0).apply()
             updateBoss()
@@ -120,24 +120,38 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     }
 
 
-    var parleyToast: Toast? = null
+    private var uniqueToast: Toast? = null
+
+    fun cancelAndShowToast(message: String){
+        uniqueToast?.cancel()
+        uniqueToast = Toast.makeText(
+            this,
+            message,
+            Toast.LENGTH_SHORT
+        )
+        uniqueToast?.show()
+    }
+
 
     fun onParleyReductionButtonClick(view: View) {
-        val  parleyReductions = sharedPreferences.getInt(parleyReduction,0)+1
-        sharedPreferences.edit().putInt(parleyReduction,parleyReductions).apply()
-        parleyToast?.cancel()
-        parleyToast = Toast.makeText(this, "Parley Reductions total: $parleyReductions", Toast.LENGTH_SHORT)
-        parleyToast?.show()
-        updateBoss()
+        changeParley(1)
     }
 
     fun onParleyIncreaseButtonClick(view: View) {
-        val  parleyReductions = sharedPreferences.getInt(parleyReduction,0)-1
-        if (parleyReductions>=0){
-            sharedPreferences.edit().putInt(parleyReduction,parleyReductions).apply()
-            parleyToast?.cancel()
-            parleyToast = Toast.makeText(this, "Parley Reductions total: $parleyReductions", Toast.LENGTH_SHORT)
-            parleyToast?.show()
+        changeParley(-1)
+    }
+
+    private fun changeParley(change: Int) {
+        val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
+        if (nextBarterTimeHundreds == 0){
+            cancelAndShowToast("Set Barter Timer first!")
+            return
+        }
+        val parleyReductions = sharedPreferences.getInt(parleyReduction, 0) + change
+        if (parleyReductions>=0) {
+            sharedPreferences.edit().putInt(parleyReduction, parleyReductions).apply()
+            cancelAndShowToast("Parley Reductions total: $parleyReductions (" +
+                    NumberHelper.instance.formatThousands(parleyReductions) + ")")
             updateBoss()
         }
     }
