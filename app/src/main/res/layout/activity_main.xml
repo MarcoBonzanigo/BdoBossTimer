@@ -70,27 +70,28 @@
         android:id="@+id/main_image_boss_one"
         android:layout_width="175dp"
         android:layout_height="175dp"
-        android:padding="5dp"
+        android:background="@drawable/button_transparent"
         android:onClick="onBossClicked"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/button_transparent"
+        app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/vell_big" />
 
     <ImageButton
         android:id="@+id/main_image_boss_two"
         android:layout_width="175dp"
         android:layout_height="175dp"
-        android:padding="5dp"
+        android:background="@drawable/button_transparent"
         android:onClick="onBossClicked"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.814"
-        android:background="@drawable/button_transparent"
+        app:layout_constraintVertical_bias="0.55"
         app:srcCompat="@drawable/vell_big" />
 
     <ImageButton
