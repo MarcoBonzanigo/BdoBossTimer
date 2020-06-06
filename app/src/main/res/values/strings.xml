@@ -6,4 +6,6 @@
     <string name="previousBossAnnounce">" %1$s  ago!"</string>
     <string name="reset_available">Reset available!</string>
     <string name="next_reset_in">Reset in %1$s!%nThat\'s at %2$s!</string>
+    <string name="next_imperial">Next:%n%1$s</string>
+    <string name="prev_imperial">Previous:%n%1$s</string>
 </resources>

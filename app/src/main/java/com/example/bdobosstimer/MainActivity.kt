@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bdobosstimer.MainActivity.BossRefresher
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        supportActionBar?.hide(); //hide the title bar
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences(id, Context.MODE_PRIVATE)
     }
@@ -58,6 +64,10 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     private fun updateBoss() {
         val nextBoss = BossHelper.instance.getNextBoss()
         val previousBoss = BossHelper.instance.getPreviousBoss()
+        val nextImperial = ImperialHelper.instance.getNextReset()
+        //Imperial
+        main_text_imperial_next.text = getString(R.string.next_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
+        main_text_imperial_prev.text = getString(R.string.prev_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffPrev))
         //Bartering
         val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
         val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100/12).toInt()

@@ -1,18 +1,18 @@
 package com.example.bdobosstimer
 
-val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15");
-val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
-const val kzarka = "Kzarka"
-const val karanda = "Karanda"
-const val nouver = "Nouver"
-const val kutum = "Kutum"
-const val garmoth = "Garmoth"
-const val offin = "Offin"
-const val vell = "Vell"
-const val quint = "Quint"
-const val muraka = "Muraka"
-const val empty = ""
-val bossGrid = arrayOf(
+private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15");
+private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
+private const val kzarka = "Kzarka"
+private const val karanda = "Karanda"
+private const val nouver = "Nouver"
+private const val kutum = "Kutum"
+private const val garmoth = "Garmoth"
+private const val offin = "Offin"
+private const val vell = "Vell"
+private const val quint = "Quint"
+private const val muraka = "Muraka"
+private const val empty = ""
+private val bossGrid = arrayOf(
     arrayOf("$karanda&$kutum", karanda, kzarka, kzarka, offin, kutum, nouver, kzarka, empty),
     arrayOf(karanda, kutum, kzarka, nouver, kutum, nouver, karanda, garmoth, empty),
     arrayOf("$kutum&$kzarka", karanda, kzarka, karanda, empty, kutum, offin,"$karanda&$kzarka","$quint&$muraka"),
@@ -21,7 +21,7 @@ val bossGrid = arrayOf(
     arrayOf(karanda, offin, nouver, kutum, nouver,"$quint&$muraka","$karanda&$kzarka",empty,empty),
     arrayOf("$nouver&$kutum", kzarka, kutum, nouver, kzarka, vell, garmoth,"$kzarka&$nouver",empty)
 )
-val imageMap = hashMapOf<String,Int>(
+private val imageMap = hashMapOf<String,Int>(
     garmoth to R.drawable.garmoth_big,
     karanda to R.drawable.karanda_big,
     kutum to R.drawable.kutum_big,
@@ -41,8 +41,8 @@ class BossHelper private constructor() {
 
      fun getNextBoss(): Boss{
          val now = TimeHelper.instance.getTimeOfTheDay()
+         val dayOfTheWeek = TimeHelper.instance.getDayOfTheWeek()
          for ((pointer, time) in timeIntGrid.withIndex()){
-             val dayOfTheWeek = TimeHelper.instance.getDayOfTheWeek()
              if (time > now && bossGrid[dayOfTheWeek][pointer] != empty){
                 return resolveBoss(now, pointer, dayOfTheWeek)
             }
