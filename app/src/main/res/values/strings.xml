@@ -2,10 +2,32 @@
     <string name="app_name">BDO Boss Timer</string>
     <string name="abc">ABC</string>
     <string name="weekday">"Current day of the Week: %1$d, Hour  %2$d"</string>
-    <string name="nextBossAnnounce">"Next Boss%1$s  to spawn %2$s %3$s!%n Spawn Time is at %4$s!%nThat's in %5$s!"</string>
-    <string name="previousBossAnnounce">" %1$s  ago!"</string>
+<!--    <string name="nextBossAnnounce">"Next Boss%1$s to spawn %2$s%n<b>%3$s</b>b>%n Spawn Time is at %4$s!%nThat's in %5$s!"</string>-->
+    <string name="next_boss_announce_red">"Next Boss%s to spawn %s:<![CDATA[<br>]]>
+        <![CDATA[<b><font color="#0277bd">%s</font></b><br>]]>
+        Spawn Time is at <![CDATA[<b>%s</b>]]>!<![CDATA[<br>]]>
+        That's in <![CDATA[<b><font color="#c62828">%s</font></b>]]>!"</string>
+    <string name="next_boss_announce_orange">"Next Boss%s to spawn %s:<![CDATA[<br>]]>
+        <![CDATA[<b><font color="#0277bd">%s</font></b><br>]]>
+        Spawn Time is at %s!<![CDATA[<br>]]>
+        That's in <![CDATA[<b><font color="#ff8f00">%s</font></b>]]>!"</string>
+    <string name="next_boss_announce_yellow">"Next Boss%s to spawn %s:<![CDATA[<br>]]>
+        <![CDATA[<b><font color="#0277bd">%s</font></b><br>]]>
+        Spawn Time is at %s!<![CDATA[<br>]]>
+        That's in <![CDATA[<b><font color="#fdd835">%s</font></b>]]>!"</string>
+    <string name="next_boss_announce_green">"Next Boss%s to spawn %s:<![CDATA[<br>]]>
+        <![CDATA[<b><font color="#0277bd">%s</font></b><br>]]>
+        Spawn Time is at %s!<![CDATA[<br>]]>
+        That's in <![CDATA[<b><font color="#558b2f">%s</font></b>]]>!"</string>
+    <string name="previous_boss_announce">" %1$s  ago!"</string>
     <string name="reset_available">Reset available!</string>
-    <string name="next_reset_in">Reset in %1$s!%nThat\'s at %2$s!</string>
-    <string name="next_imperial">Next:%n%1$s</string>
+    <string name="next_reset_in_red">Barter Reset in<![CDATA[<br><b><font color="#c62828">%s</font></b><br>]]>That\'s at %s!</string>
+    <string name="next_reset_in_orange">Barter Reset in<![CDATA[<br><b><font color="#ff8f00">%s</font></b><br>]]>That\'s at %s!</string>
+    <string name="next_reset_in_yellow">Barter Reset in<![CDATA[<br><b><font color="#fdd835">%s</font></b><br>]]>That\'s at %s!</string>
+    <string name="next_reset_in_green">Barter Reset in<![CDATA[<br><b><font color="#558b2f">%s</font></b><br>]]>That\'s at %s!</string>
+    <string name="next_imperial_red">Next:<![CDATA[<br><b><font color="#c62828">%s</font></b>]]></string>
+    <string name="next_imperial_orange">Next:<![CDATA[<br><b><font color="#ff8f00">%s</font></b>]]></string>
+    <string name="next_imperial_yellow">Next:<![CDATA[<br><b><font color="#fdd835">%s</font></b>]]></string>
+    <string name="next_imperial_green">Next:<![CDATA[<br><b><font color="#558b2f">%s</font></b>]]></string>
     <string name="prev_imperial">Previous:%n%1$s</string>
 </resources>

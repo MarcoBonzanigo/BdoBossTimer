@@ -60,7 +60,7 @@ class TimeHelper {
 
     fun getTimeDifferenceToNow(time: Int) = getTimeDifference(time, getTimeOfTheDay())
 
-    fun hundredToSixtyFormat(hundredTime: Int): String? {
+    fun hundredToSixtyFormat(hundredTime: Int): String {
         val hours = hundredTime%2400/100
         val minutes = ((hundredTime-(hundredTime/100)*100)*0.6).toInt()
         val hoursStr = if (hours<10) "0$hours" else "$hours"

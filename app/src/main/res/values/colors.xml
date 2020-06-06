@@ -6,8 +6,11 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="dark_gray">#444444</color>
-    <color name="green">#388e3c</color>
-    <color name="red">#d32f2f</color>
+    <color name="blue">#0277bd</color>
+    <color name="red">#c62828</color>
+    <color name="orange">#ff8f00</color>
+    <color name="yellow">#fdd835</color>
+    <color name="green">#558b2f</color>
     <color name="transparent">#00000000</color>
 
 </resources>

@@ -65,24 +65,54 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         val nextBoss = BossHelper.instance.getNextBoss()
         val previousBoss = BossHelper.instance.getPreviousBoss()
         val nextImperial = ImperialHelper.instance.getNextReset()
+        val imperialString =
+            when {
+                nextImperial.timeDiffNext <= 15 -> {
+                    R.string.next_imperial_red
+                }
+                nextImperial.timeDiffNext <= 30 -> {
+                    R.string.next_imperial_orange
+                }
+                nextImperial.timeDiffNext <= 60 -> {
+                    R.string.next_imperial_yellow
+                }
+                else -> {
+                    R.string.next_imperial_green
+                }
+            }
         //Imperial
-        main_text_imperial_next.text = getString(R.string.next_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
+        main_text_imperial_next.text = resources.getHtmlSpannedString(imperialString,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
         main_text_imperial_prev.text = getString(R.string.prev_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffPrev))
         //Bartering
         val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
         val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100/12).toInt()
         val nextBarterTimeTotal = nextBarterTimeAbsolute-totalParleyReduction
-        val timeDifferenceToNow = TimeHelper.instance.getTimeDifferenceToNow(nextBarterTimeTotal)
-        if (nextBarterTimeAbsolute == 0 || timeDifferenceToNow<0){
+        val barterTimeDifferenceToNow = TimeHelper.instance.getTimeDifferenceToNow(nextBarterTimeTotal)
+        if (nextBarterTimeAbsolute == 0 || barterTimeDifferenceToNow<0){
             main_text_barter_title.text = getString(R.string.reset_available)
             sharedPreferences.edit().putInt(nextBarterTime,0).apply()
             sharedPreferences.edit().putInt(parleyReduction,0).apply()
         }else{
-            main_text_barter_title.text = getString(R.string.next_reset_in,TimeHelper.instance.minutesToHoursAndMinutes(timeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
+            val barterString =
+                when {
+                    barterTimeDifferenceToNow <= 15 -> {
+                        R.string.next_reset_in_red
+                    }
+                    barterTimeDifferenceToNow <= 30 -> {
+                        R.string.next_reset_in_orange
+                    }
+                    barterTimeDifferenceToNow <= 60 -> {
+                        R.string.next_reset_in_yellow
+                    }
+                    else -> {
+                        R.string.next_reset_in_green
+                    }
+                }
+            main_text_barter_title.text = resources.getHtmlSpannedString(barterString,TimeHelper.instance.minutesToHoursAndMinutes(barterTimeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
         }
         //Previous Boss
         main_text_boss_title_previous.text = getString(
-            R.string.previousBossAnnounce,TimeHelper.instance.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
+            R.string.previous_boss_announce,TimeHelper.instance.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
         main_image_boss_previous_one.setImageResource(previousBoss.bossOneImageResource!!)
         if (previousBoss.bossTwoImageResource != null) {
             main_image_boss_previous_two.visibility = VISIBLE
@@ -91,11 +121,26 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             main_image_boss_previous_two.visibility = GONE
         }
         //Next Boss
-        main_text_boss_title.text = getString(
-            R.string.nextBossAnnounce,
+        val bossString = when {
+            nextBoss.minutesToSpawn <= 15 -> {
+                R.string.next_boss_announce_red
+            }
+            nextBoss.minutesToSpawn <= 30 -> {
+                R.string.next_boss_announce_orange
+            }
+            nextBoss.minutesToSpawn <= 60 -> {
+                R.string.next_boss_announce_yellow
+            }
+            else -> {
+                R.string.next_boss_announce_green
+            }
+        }
+
+        main_text_boss_title.text = resources.getHtmlSpannedString(
+            bossString,
             if (nextBoss.name.contains("&")) "es" else "",
             if (nextBoss.name.contains("&")) "are" else "is",
-            nextBoss.name,
+            nextBoss.name.replace("&"," & "),
             nextBoss.timeSpawn,
             TimeHelper.instance.minutesToHoursAndMinutes(nextBoss.minutesToSpawn)
         )
