@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     private fun changeParley(change: Int) {
         val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
-        if (nextBarterTimeHundreds == 0 || nextBarterTimeHundreds > 400){
+        if (nextBarterTimeHundreds == 0){
             cancelAndShowToast("Set Barter Timer first!")
             return
         }
