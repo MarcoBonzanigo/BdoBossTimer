@@ -17,7 +17,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.024"
-        app:srcCompat="@drawable/vell_big" />
+        app:srcCompat="@drawable/vell_big"
+        android:contentDescription="@string/image"/>
 
     <ImageView
         android:id="@+id/main_image_boss_previous_two"
@@ -29,7 +30,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.024"
-        app:srcCompat="@drawable/vell_big" />
+        app:srcCompat="@drawable/vell_big"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/main_text_boss_title_previous"
@@ -78,7 +80,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4"
-        app:srcCompat="@drawable/vell_big" />
+        app:srcCompat="@drawable/vell_big"
+        android:contentDescription="@string/image"/>
 
     <ImageButton
         android:id="@+id/main_image_boss_two"
@@ -92,14 +95,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.55"
-        app:srcCompat="@drawable/vell_big" />
+        app:srcCompat="@drawable/vell_big"
+        android:contentDescription="@string/image"/>
 
     <ImageButton
         android:id="@+id/main_image_imperial"
         android:layout_width="85dp"
         android:layout_height="99dp"
         android:background="@drawable/button_transparent"
-        android:onClick="onParleyIncreaseButtonClick"
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@+id/main_image_parley_reduction"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,14 +112,14 @@
         app:layout_constraintStart_toStartOf="@+id/main_image_barter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/imperial" />
+        app:srcCompat="@drawable/imperial"
+        android:contentDescription="@string/image"/>
 
     <TextView
         android:id="@+id/main_text_imperial_prev"
         android:layout_width="85dp"
         android:layout_height="99dp"
         android:background="@drawable/button_dark_gray"
-        android:onClick="onParleyReductionButtonClick"
         android:padding="5dp"
         android:textColor="@color/white"
         android:gravity="center"
@@ -135,7 +138,6 @@
         android:layout_height="99dp"
         android:background="@drawable/button_dark_gray"
         android:gravity="center"
-        android:onClick="onParleyReductionButtonClick"
         android:padding="5dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -162,7 +164,8 @@
         app:layout_constraintStart_toStartOf="@+id/main_image_barter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
-        app:srcCompat="@drawable/parley_inc" />
+        app:srcCompat="@drawable/parley_inc"
+        android:contentDescription="@string/image"/>
 
     <ImageButton
         android:id="@+id/main_image_parley_reduction"
@@ -179,7 +182,8 @@
         app:layout_constraintStart_toStartOf="@+id/main_image_barter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
-        app:srcCompat="@drawable/parley" />
+        app:srcCompat="@drawable/parley"
+        android:contentDescription="@string/image"/>
 
     <ImageButton
         android:id="@+id/main_image_barter"
@@ -194,7 +198,8 @@
         app:layout_constraintTop_toBottomOf="@+id/main_image_boss_two"
         app:layout_constraintVertical_bias="0.993"
         android:background="@drawable/button_transparent"
-        app:srcCompat="@drawable/barter" />
+        app:srcCompat="@drawable/barter"
+        android:contentDescription="@string/image"/>
 
     <TextView
         android:id="@+id/main_text_barter_title"
@@ -231,7 +236,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/kzarka_big" />
+            app:srcCompat="@drawable/kzarka_big"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/main_image_boss_setting_karanda"
@@ -242,7 +248,8 @@
             android:background="@drawable/button_green"
             android:onClick="bossSettingChanged"
             android:padding="5dp"
-            app:srcCompat="@drawable/karanda_big" />
+            app:srcCompat="@drawable/karanda_big"
+            android:contentDescription="@string/image"/>
 
         <ImageView
             android:id="@+id/main_image_boss_setting_kutum"
@@ -252,7 +259,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/kutum_big" />
+            app:srcCompat="@drawable/kutum_big"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/main_image_boss_setting_nouver"
@@ -262,7 +270,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/nouver_big" />
+            app:srcCompat="@drawable/nouver_big"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/main_image_boss_setting_offin"
@@ -272,7 +281,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/offin_big" />
+            app:srcCompat="@drawable/offin_big"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/main_image_boss_setting_garmoth"
@@ -282,7 +292,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/garmoth_big" />
+            app:srcCompat="@drawable/garmoth_big"
+            android:contentDescription="@string/image"/>
 
         <ImageView
             android:id="@+id/main_image_boss_setting_quint"
@@ -292,7 +303,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/quint_big" />
+            app:srcCompat="@drawable/quint_big"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/main_image_boss_setting_muraka"
@@ -302,7 +314,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/muraka_big" />
+            app:srcCompat="@drawable/muraka_big"
+            android:contentDescription="@string/image"/>
 
         <ImageView
             android:id="@+id/main_image_boss_setting_vell"
@@ -312,6 +325,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:padding="5dp"
-            app:srcCompat="@drawable/vell_big" />
+            app:srcCompat="@drawable/vell_big"
+            android:contentDescription="@string/image"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

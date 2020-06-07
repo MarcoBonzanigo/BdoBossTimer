@@ -27,10 +27,10 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        supportActionBar?.hide(); //hide the title bar
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportActionBar?.hide()
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences(id, Context.MODE_PRIVATE)
     }
@@ -61,53 +61,54 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         refresher!!.execute()
     }
 
+    private fun resolveByTime(green: Int, yellow: Int, orange: Int, red: Int, time: Int): Int{
+        return when {
+            time <= 15 -> {
+                red
+            }
+            time <= 30 -> {
+                orange
+            }
+            time <= 60 -> {
+                yellow
+            }
+            else -> {
+                green
+            }
+        }
+    }
+
     private fun updateBoss() {
         val nextBoss = BossHelper.instance.getNextBoss()
         val previousBoss = BossHelper.instance.getPreviousBoss()
         val nextImperial = ImperialHelper.instance.getNextReset()
-        val imperialString =
-            when {
-                nextImperial.timeDiffNext <= 15 -> {
-                    R.string.next_imperial_red
-                }
-                nextImperial.timeDiffNext <= 30 -> {
-                    R.string.next_imperial_orange
-                }
-                nextImperial.timeDiffNext <= 60 -> {
-                    R.string.next_imperial_yellow
-                }
-                else -> {
-                    R.string.next_imperial_green
-                }
-            }
+        val imperialString = resolveByTime(
+            R.string.next_imperial_green,
+            R.string.next_imperial_yellow,
+            R.string.next_imperial_orange,
+            R.string.next_imperial_red,
+            nextImperial.timeDiffNext
+        )
         //Imperial
         main_text_imperial_next.text = resources.getHtmlSpannedString(imperialString,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
         main_text_imperial_prev.text = getString(R.string.prev_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffPrev))
         //Bartering
         val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
-        val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100/12).toInt()
+        val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100.0/12.0).toInt()
         val nextBarterTimeTotal = nextBarterTimeAbsolute-totalParleyReduction
         val barterTimeDifferenceToNow = TimeHelper.instance.getTimeDifferenceToNow(nextBarterTimeTotal)
-        if (nextBarterTimeAbsolute == 0 || barterTimeDifferenceToNow<0){
+        if (nextBarterTimeAbsolute == 0 || barterTimeDifferenceToNow<0 || barterTimeDifferenceToNow > 400){
             main_text_barter_title.text = getString(R.string.reset_available)
             sharedPreferences.edit().putInt(nextBarterTime,0).apply()
             sharedPreferences.edit().putInt(parleyReduction,0).apply()
         }else{
-            val barterString =
-                when {
-                    barterTimeDifferenceToNow <= 15 -> {
-                        R.string.next_reset_in_red
-                    }
-                    barterTimeDifferenceToNow <= 30 -> {
-                        R.string.next_reset_in_orange
-                    }
-                    barterTimeDifferenceToNow <= 60 -> {
-                        R.string.next_reset_in_yellow
-                    }
-                    else -> {
-                        R.string.next_reset_in_green
-                    }
-                }
+            val barterString = resolveByTime(
+                R.string.next_reset_in_green,
+                R.string.next_reset_in_yellow,
+                R.string.next_reset_in_orange,
+                R.string.next_reset_in_red,
+                barterTimeDifferenceToNow
+            )
             main_text_barter_title.text = resources.getHtmlSpannedString(barterString,TimeHelper.instance.minutesToHoursAndMinutes(barterTimeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
         }
         //Previous Boss
@@ -121,20 +122,13 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             main_image_boss_previous_two.visibility = GONE
         }
         //Next Boss
-        val bossString = when {
-            nextBoss.minutesToSpawn <= 15 -> {
-                R.string.next_boss_announce_red
-            }
-            nextBoss.minutesToSpawn <= 30 -> {
-                R.string.next_boss_announce_orange
-            }
-            nextBoss.minutesToSpawn <= 60 -> {
-                R.string.next_boss_announce_yellow
-            }
-            else -> {
-                R.string.next_boss_announce_green
-            }
-        }
+        val bossString = resolveByTime(
+            R.string.next_boss_announce_green,
+            R.string.next_boss_announce_yellow,
+            R.string.next_boss_announce_orange,
+            R.string.next_boss_announce_red,
+            nextBoss.minutesToSpawn
+        )
 
         main_text_boss_title.text = resources.getHtmlSpannedString(
             bossString,
@@ -155,7 +149,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     private var barterResetCounter = 0
 
-    fun onBarterButtonClick(view: View) {
+    fun onBarterButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
         val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
         if (nextBarterTimeHundreds == 0){
             val timeOfDay = TimeHelper.instance.getTimeOfTheDay()+400
@@ -177,7 +171,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
 
     private var uniqueToast: Toast? = null
 
-    fun cancelAndShowToast(message: String){
+    private fun cancelAndShowToast(message: String){
         uniqueToast?.cancel()
         uniqueToast = Toast.makeText(
             this,
@@ -188,17 +182,17 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     }
 
 
-    fun onParleyReductionButtonClick(view: View) {
+    fun onParleyReductionButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
         changeParley(1)
     }
 
-    fun onParleyIncreaseButtonClick(view: View) {
+    fun onParleyIncreaseButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
         changeParley(-1)
     }
 
     private fun changeParley(change: Int) {
         val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
-        if (nextBarterTimeHundreds == 0){
+        if (nextBarterTimeHundreds == 0 || nextBarterTimeHundreds > 400){
             cancelAndShowToast("Set Barter Timer first!")
             return
         }
@@ -214,13 +208,13 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     fun onBossClicked(view: View) {
         when (view.id) {
             R.id.main_image_boss_one -> {
-                if (bossOneMessage.length > 0){
-                    Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+                if (bossOneMessage.isNotEmpty()){
+                    Toast.makeText(this, bossOneMessage, Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.main_image_boss_two -> {
-                if (bossTwoMessage.length > 0){
-                    Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
+                if (bossTwoMessage.isNotEmpty()){
+                    Toast.makeText(this, bossTwoMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }

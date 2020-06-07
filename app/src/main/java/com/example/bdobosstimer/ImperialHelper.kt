@@ -1,6 +1,6 @@
 package com.example.bdobosstimer
 
-private val timeGrid = arrayOf("02:00","05:00","08:00","11:00","14:00","17:00","20:00","23:00");
+private val timeGrid = arrayOf("02:00","05:00","08:00","11:00","14:00","17:00","20:00","23:00")
 private val timeIntGrid = arrayOf(200,500,800,1100,1400,1700,2000,2300)
 
 class ImperialHelper private constructor() {

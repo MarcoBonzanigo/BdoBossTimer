@@ -30,4 +30,5 @@
     <string name="next_imperial_yellow">Next:<![CDATA[<br><b><font color="#fdd835">%s</font></b>]]></string>
     <string name="next_imperial_green">Next:<![CDATA[<br><b><font color="#558b2f">%s</font></b>]]></string>
     <string name="prev_imperial">Previous:%n%1$s</string>
+    <string name="image">Image</string>
 </resources>

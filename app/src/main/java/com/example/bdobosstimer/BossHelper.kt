@@ -1,6 +1,6 @@
 package com.example.bdobosstimer
 
-private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15");
+private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15")
 private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
 private const val kzarka = "Kzarka"
 private const val karanda = "Karanda"
@@ -21,7 +21,7 @@ private val bossGrid = arrayOf(
     arrayOf(karanda, offin, nouver, kutum, nouver,"$quint&$muraka","$karanda&$kzarka",empty,empty),
     arrayOf("$nouver&$kutum", kzarka, kutum, nouver, kzarka, vell, garmoth,"$kzarka&$nouver",empty)
 )
-private val imageMap = hashMapOf<String,Int>(
+private val imageMap = hashMapOf(
     garmoth to R.drawable.garmoth_big,
     karanda to R.drawable.karanda_big,
     kutum to R.drawable.kutum_big,
