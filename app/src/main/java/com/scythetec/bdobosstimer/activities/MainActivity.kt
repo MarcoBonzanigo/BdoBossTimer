@@ -1,6 +1,9 @@
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer.activities
 
+import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
@@ -11,19 +14,27 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bdobosstimer.MainActivity.BossRefresher
+import com.scythetec.bdobosstimer.R
+import com.scythetec.bdobosstimer.activities.MainActivity.BossRefresher
+import com.scythetec.bdobosstimer.function.BossAlertService
+import com.scythetec.bdobosstimer.function.getHtmlSpannedString
+import com.scythetec.bdobosstimer.helper.BossHelper
+import com.scythetec.bdobosstimer.helper.ImperialHelper
+import com.scythetec.bdobosstimer.helper.NumberHelper
+import com.scythetec.bdobosstimer.helper.TimeHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
+const val id = "bdo_boss_timer"
 private var refresher: BossRefresher? = null
-private const val id = "bdo_boss_timer"
 private lateinit var sharedPreferences: SharedPreferences
 private const val nextBarterTime = "next_barter_time"
 private const val parleyReduction = "parley_reduction"
 private var bossOneMessage = ""
 private var bossTwoMessage = ""
 
-class MainActivity : AppCompatActivity(), SynchronizedActivity{
+@Suppress("DEPRECATION")
+class MainActivity : AppCompatActivity(), SynchronizedActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +43,26 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
-        sharedPreferences = getSharedPreferences(id, Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(
+            id, Context.MODE_PRIVATE)
+    }
+
+    private fun isMyServiceRunning(): Boolean {
+        var serviceRunning = false
+        val am = this.getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager
+        val rs = am.getRunningServices(50)
+        for (runningServiceInfo in rs){
+            if (runningServiceInfo.service.className == BossAlertService::class.java.name){
+                serviceRunning = true
+            }
+        }
+        return serviceRunning
+    }
+
+    private fun checkAndRunAlertService() {
+        stopService(Intent(this, BossAlertService::class.java))
+        val intent = Intent(applicationContext, BossAlertService::class.java)
+        startService(intent)
     }
 
     override fun onPause() {
@@ -40,14 +70,10 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         super.onPause()
     }
 
-    override fun onDestroy() {
-        cancelRefresher()
-        super.onDestroy()
-    }
-
     override fun onResume() {
         super.onResume()
         synchronize()
+        checkAndRunAlertService()
     }
 
     private fun cancelRefresher() {
@@ -90,17 +116,24 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
             nextImperial.timeDiffNext
         )
         //Imperial
-        main_text_imperial_next.text = resources.getHtmlSpannedString(imperialString,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
-        main_text_imperial_prev.text = getString(R.string.prev_imperial,TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffPrev))
+        main_text_imperial_next.text = resources.getHtmlSpannedString(imperialString,
+            TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffNext))
+        main_text_imperial_prev.text = getString(
+            R.string.prev_imperial,
+            TimeHelper.instance.minutesToHoursAndMinutes(nextImperial.timeDiffPrev))
         //Bartering
-        val nextBarterTimeAbsolute = sharedPreferences.getInt(nextBarterTime,0)
-        val totalParleyReduction = (sharedPreferences.getInt(parleyReduction,0)*100.0/12.0).toInt()
+        val nextBarterTimeAbsolute = sharedPreferences.getInt(
+            nextBarterTime,0)
+        val totalParleyReduction = (sharedPreferences.getInt(
+            parleyReduction,0)*100.0/12.0).toInt()
         val nextBarterTimeTotal = nextBarterTimeAbsolute-totalParleyReduction
         val barterTimeDifferenceToNow = TimeHelper.instance.getTimeDifferenceToNow(nextBarterTimeTotal)
         if (nextBarterTimeAbsolute == 0 || barterTimeDifferenceToNow<0 || barterTimeDifferenceToNow > 400){
             main_text_barter_title.text = getString(R.string.reset_available)
-            sharedPreferences.edit().putInt(nextBarterTime,0).apply()
-            sharedPreferences.edit().putInt(parleyReduction,0).apply()
+            sharedPreferences.edit().putInt(
+                nextBarterTime,0).apply()
+            sharedPreferences.edit().putInt(
+                parleyReduction,0).apply()
         }else{
             val barterString = resolveByTime(
                 R.string.next_reset_in_green,
@@ -109,11 +142,13 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
                 R.string.next_reset_in_red,
                 barterTimeDifferenceToNow
             )
-            main_text_barter_title.text = resources.getHtmlSpannedString(barterString,TimeHelper.instance.minutesToHoursAndMinutes(barterTimeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
+            main_text_barter_title.text = resources.getHtmlSpannedString(barterString,
+                TimeHelper.instance.minutesToHoursAndMinutes(barterTimeDifferenceToNow), TimeHelper.instance.hundredToSixtyFormat(nextBarterTimeTotal))
         }
         //Previous Boss
         main_text_boss_title_previous.text = getString(
-            R.string.previous_boss_announce,TimeHelper.instance.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
+            R.string.previous_boss_announce,
+            TimeHelper.instance.minutesToHoursAndMinutes(previousBoss.minutesToSpawn*-1))
         main_image_boss_previous_one.setImageResource(previousBoss.bossOneImageResource!!)
         if (previousBoss.bossTwoImageResource != null) {
             main_image_boss_previous_two.visibility = VISIBLE
@@ -150,19 +185,24 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     private var barterResetCounter = 0
 
     fun onBarterButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
+        val  nextBarterTimeHundreds = sharedPreferences.getInt(
+            nextBarterTime,0)
         if (nextBarterTimeHundreds == 0){
             val timeOfDay = TimeHelper.instance.getTimeOfTheDay()+400
-            sharedPreferences.edit().putInt(nextBarterTime,timeOfDay).apply()
-            sharedPreferences.edit().putInt(parleyReduction,0).apply()
+            sharedPreferences.edit().putInt(
+                nextBarterTime,timeOfDay).apply()
+            sharedPreferences.edit().putInt(
+                parleyReduction,0).apply()
             updateBoss()
         }else{
             barterResetCounter++
         }
         if (barterResetCounter==3){
             barterResetCounter = 0
-            sharedPreferences.edit().putInt(nextBarterTime,0).apply()
-            sharedPreferences.edit().putInt(parleyReduction,0).apply()
+            sharedPreferences.edit().putInt(
+                nextBarterTime,0).apply()
+            sharedPreferences.edit().putInt(
+                parleyReduction,0).apply()
             main_text_barter_title.text = getString(R.string.reset_available)
             Toast.makeText(this, "Barter Timer has been reset!", Toast.LENGTH_SHORT).show()
         }
@@ -191,14 +231,17 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
     }
 
     private fun changeParley(change: Int) {
-        val  nextBarterTimeHundreds = sharedPreferences.getInt(nextBarterTime,0)
+        val  nextBarterTimeHundreds = sharedPreferences.getInt(
+            nextBarterTime,0)
         if (nextBarterTimeHundreds == 0){
             cancelAndShowToast("Set Barter Timer first!")
             return
         }
-        val parleyReductions = sharedPreferences.getInt(parleyReduction, 0) + change
+        val parleyReductions = sharedPreferences.getInt(
+            parleyReduction, 0) + change
         if (parleyReductions>=0) {
-            sharedPreferences.edit().putInt(parleyReduction, parleyReductions).apply()
+            sharedPreferences.edit().putInt(
+                parleyReduction, parleyReductions).apply()
             cancelAndShowToast("Parley Reductions total: $parleyReductions (" +
                     NumberHelper.instance.formatThousands(parleyReductions) + ")")
             updateBoss()
@@ -209,50 +252,18 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity{
         when (view.id) {
             R.id.main_image_boss_one -> {
                 if (bossOneMessage.isNotEmpty()){
-                    Toast.makeText(this, bossOneMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,
+                        bossOneMessage, Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.main_image_boss_two -> {
                 if (bossTwoMessage.isNotEmpty()){
-                    Toast.makeText(this, bossTwoMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,
+                        bossTwoMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-
-    fun bossSettingChanged(view: View) {
-        when (view.id) {
-            R.id.main_image_boss_setting_kzarka -> {
-
-            }
-            R.id.main_image_boss_setting_karanda -> {
-
-            }
-            R.id.main_image_boss_setting_nouver -> {
-
-            }
-            R.id.main_image_boss_setting_kutum -> {
-
-            }
-            R.id.main_image_boss_setting_offin -> {
-
-            }
-            R.id.main_image_boss_setting_muraka -> {
-
-            }
-            R.id.main_image_boss_setting_quint -> {
-
-            }
-            R.id.main_image_boss_setting_garmoth -> {
-
-            }
-            R.id.main_image_boss_setting_vell -> {
-
-            }
-        }
-    }
-
-
 
     class BossRefresher(private val synchronizedActivity: SynchronizedActivity) : AsyncTask<Void, Void, Void>() {
 

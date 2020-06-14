@@ -19,6 +19,7 @@
         <![CDATA[<b><font color="#0277bd">%s</font></b><br>]]>
         Spawn Time is at %s!<![CDATA[<br>]]>
         That's in <![CDATA[<b><font color="#558b2f">%s</font></b>]]>!"</string>
+    <string name="explain">"* <![CDATA[<b><font color="#558b2f">Enabled</font></b><br>]]>*<![CDATA[<b><font color="#ff8f00"> Time-Restricted</font></b><br>]]>*<![CDATA[<b><font color="#c62828"> Disabled</font></b>]]>"</string>
     <string name="previous_boss_announce">" %1$s  ago!"</string>
     <string name="reset_available">Reset available!</string>
     <string name="next_reset_in_red">Barter Reset in<![CDATA[<br><b><font color="#c62828">%s</font></b><br>]]>That\'s at %s!</string>

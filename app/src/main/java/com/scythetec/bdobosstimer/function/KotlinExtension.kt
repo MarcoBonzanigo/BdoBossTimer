@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer.function
 
 import android.content.res.Resources
 import android.os.Build

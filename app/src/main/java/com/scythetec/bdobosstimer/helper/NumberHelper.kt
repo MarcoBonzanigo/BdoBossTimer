@@ -1,9 +1,10 @@
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer.helper
 
 class NumberHelper {
 
     companion object{
-        val instance: NumberHelper = NumberHelper()
+        val instance: NumberHelper =
+            NumberHelper()
     }
 
     fun formatThousands(number: Int): String{

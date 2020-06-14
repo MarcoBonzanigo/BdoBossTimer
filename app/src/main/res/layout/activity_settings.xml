@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:weightSum="2">
+
+
+    <LinearLayout
+        android:id="@+id/settings_linear_bosses"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="9"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/settings_linear_days"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_kzarka"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
+            android:padding="5dp"
+            app:srcCompat="@drawable/kzarka_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_karanda"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:padding="5dp"
+            android:onClick="onBossSettingChanged"
+            app:srcCompat="@drawable/karanda_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_kutum"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:padding="5dp"
+            app:srcCompat="@drawable/kutum_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_nouver"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
+            android:padding="5dp"
+            app:srcCompat="@drawable/nouver_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_offin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:padding="5dp"
+            app:srcCompat="@drawable/offin_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_garmoth"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
+            android:padding="5dp"
+            app:srcCompat="@drawable/garmoth_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_quint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:padding="5dp"
+            app:srcCompat="@drawable/quint_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_muraka"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
+            android:padding="5dp"
+            app:srcCompat="@drawable/muraka_big" />
+
+        <ImageView
+            android:id="@+id/settings_image_boss_setting_vell"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vell_big" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settings_linear_days"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginLeft="100dp"
+        android:orientation="vertical"
+        android:weightSum="12"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settings_linear_bosses"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <Button
+            android:id="@+id/settings_button_monday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Monday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_tuesday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Tuesday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_wednesday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Wednesday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_thursday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Thursday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_friday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Friday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_saturday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Saturday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+
+        <Button
+            android:id="@+id/settings_button_sunday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:onClick="onDaySettingChanged"
+            android:layout_weight="1"
+            android:text="Sunday"
+            android:background="@drawable/button_green"
+            android:padding="5dp" />
+        <TextView
+            android:id="@+id/settings_text_silent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Do not Disturb between"
+            android:padding="5dp" />
+
+        <TimePicker
+            android:id="@+id/settings_time_picker_from"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/button_black_white"
+            android:timePickerMode="spinner"/>
+
+        <TextView
+            android:id="@+id/settings_text_and"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:text="and"
+            android:padding="5dp" />
+
+        <TimePicker
+            android:id="@+id/settings_time_picker_to"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/button_black_white"
+            android:timePickerMode="spinner"/>
+
+        <TextView
+            android:id="@+id/settings_text_explain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:padding="5dp" />
+    </LinearLayout>
+
+</LinearLayout>

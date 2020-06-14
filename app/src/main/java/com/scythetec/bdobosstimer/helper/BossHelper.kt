@@ -1,4 +1,6 @@
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer.helper
+
+import com.scythetec.bdobosstimer.R
 
 private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15")
 private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
@@ -13,13 +15,72 @@ private const val quint = "Quint"
 private const val muraka = "Muraka"
 private const val empty = ""
 private val bossGrid = arrayOf(
-    arrayOf("$karanda&$kutum", karanda, kzarka, kzarka, offin, kutum, nouver, kzarka, empty),
-    arrayOf(karanda, kutum, kzarka, nouver, kutum, nouver, karanda, garmoth, empty),
-    arrayOf("$kutum&$kzarka", karanda, kzarka, karanda, empty, kutum, offin,"$karanda&$kzarka","$quint&$muraka"),
-    arrayOf(nouver, kutum, nouver, kutum, nouver, kzarka, kutum, garmoth, empty),
-    arrayOf("$kzarka&$karanda", nouver, karanda, kutum, karanda, nouver, kzarka,"$kutum&$kzarka",empty),
-    arrayOf(karanda, offin, nouver, kutum, nouver,"$quint&$muraka","$karanda&$kzarka",empty,empty),
-    arrayOf("$nouver&$kutum", kzarka, kutum, nouver, kzarka, vell, garmoth,"$kzarka&$nouver",empty)
+    arrayOf("$karanda&$kutum",
+        karanda,
+        kzarka,
+        kzarka,
+        offin,
+        kutum,
+        nouver,
+        kzarka,
+        empty
+    ),
+    arrayOf(
+        karanda,
+        kutum,
+        kzarka,
+        nouver,
+        kutum,
+        nouver,
+        karanda,
+        garmoth,
+        empty
+    ),
+    arrayOf("$kutum&$kzarka",
+        karanda,
+        kzarka,
+        karanda,
+        empty,
+        kutum,
+        offin,"$karanda&$kzarka","$quint&$muraka"),
+    arrayOf(
+        nouver,
+        kutum,
+        nouver,
+        kutum,
+        nouver,
+        kzarka,
+        kutum,
+        garmoth,
+        empty
+    ),
+    arrayOf("$kzarka&$karanda",
+        nouver,
+        karanda,
+        kutum,
+        karanda,
+        nouver,
+        kzarka,"$kutum&$kzarka",
+        empty
+    ),
+    arrayOf(
+        karanda,
+        offin,
+        nouver,
+        kutum,
+        nouver,"$quint&$muraka","$karanda&$kzarka",
+        empty,
+        empty
+    ),
+    arrayOf("$nouver&$kutum",
+        kzarka,
+        kutum,
+        nouver,
+        kzarka,
+        vell,
+        garmoth,"$kzarka&$nouver",
+        empty
+    )
 )
 private val imageMap = hashMapOf(
     garmoth to R.drawable.garmoth_big,
@@ -29,17 +90,18 @@ private val imageMap = hashMapOf(
     offin to R.drawable.offin_big,
     nouver to R.drawable.nouver_big,
     quint to R.drawable.quint_big,
-    muraka to  R.drawable.muraka_big,
-    vell to  R.drawable.vell_big
+    muraka to R.drawable.muraka_big,
+    vell to R.drawable.vell_big
 )
 
 class BossHelper private constructor() {
 
     companion object {
-        val instance: BossHelper = BossHelper()
+        val instance: BossHelper =
+            BossHelper()
     }
 
-     fun getNextBoss(): Boss{
+     fun getNextBoss(): Boss {
          val now = TimeHelper.instance.getTimeOfTheDay()
          val dayOfTheWeek = TimeHelper.instance.getDayOfTheWeek()
          for ((pointer, time) in timeIntGrid.withIndex()){
@@ -51,7 +113,7 @@ class BossHelper private constructor() {
      }
 
 
-    fun getPreviousBoss(): Boss{
+    fun getPreviousBoss(): Boss {
         val now = TimeHelper.instance.getTimeOfTheDay()
         val dayOfTheWeek = TimeHelper.instance.getDayOfTheWeek()
         for ((pointer, time) in timeIntGrid.withIndex()){
@@ -78,7 +140,11 @@ class BossHelper private constructor() {
         val timeDiff = TimeHelper.instance.getTimeDifference(time, now)
         val timeSpawn = timeGrid[pointer]
         val bossName = bossGrid[dayOfWeek][pointer]
-        return Boss(bossName, timeSpawn, timeDiff)
+        return Boss(
+            bossName,
+            timeSpawn,
+            timeDiff
+        )
     }
 
     class Boss(val name: String, val timeSpawn: String, val minutesToSpawn: Int){

@@ -1,4 +1,4 @@
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer.helper
 
 import java.util.*
 import kotlin.math.ceil
@@ -11,19 +11,22 @@ private var dayOfTheWeek = 0
 class TimeHelper {
 
     companion object {
-        val instance: TimeHelper = TimeHelper()
+        val instance: TimeHelper =
+            TimeHelper()
     }
 
     fun setDebug(timeOfTheDay0: Int, dayOfTheWeek0: Int){
         timeOfTheDay = timeOfTheDay0
         dayOfTheWeek = dayOfTheWeek0
-        mode = MODE.DEBUG
+        mode =
+            MODE.DEBUG
     }
 
     fun setNormal(){
         timeOfTheDay = 0
         dayOfTheWeek = 0
-        mode = MODE.NORMAL
+        mode =
+            MODE.NORMAL
     }
 
     fun minutesToHoursAndMinutes (minutes: Int): String {
@@ -38,7 +41,7 @@ class TimeHelper {
     }
 
     fun getDayOfTheWeek(addDays: Int = 0): Int {
-        if (mode==MODE.DEBUG){
+        if (mode == MODE.DEBUG){
             return dayOfTheWeek
         }
         val calendar = Calendar.getInstance()
@@ -47,7 +50,7 @@ class TimeHelper {
     }
 
     fun getTimeOfTheDay(): Int {
-        if (mode==MODE.DEBUG){
+        if (mode == MODE.DEBUG){
             return timeOfTheDay
         }
         val calendar = Calendar.getInstance()

@@ -1,4 +1,4 @@
-package com.example.bdobosstimer
+package com.scythetec.bdobosstimer
 
 import org.junit.Test
 
