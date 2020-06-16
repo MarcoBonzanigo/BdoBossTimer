@@ -1,18 +1,19 @@
 package com.scythetec.bdobosstimer.helper
 
+import android.content.SharedPreferences
 import com.scythetec.bdobosstimer.R
 
 private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15")
 private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
-private const val kzarka = "Kzarka"
-private const val karanda = "Karanda"
-private const val nouver = "Nouver"
-private const val kutum = "Kutum"
-private const val garmoth = "Garmoth"
-private const val offin = "Offin"
-private const val vell = "Vell"
-private const val quint = "Quint"
-private const val muraka = "Muraka"
+const val kzarka = "Kzarka"
+const val karanda = "Karanda"
+const val nouver = "Nouver"
+const val kutum = "Kutum"
+const val garmoth = "Garmoth"
+const val offin = "Offin"
+const val vell = "Vell"
+const val quint = "Quint"
+const val muraka = "Muraka"
 private const val empty = ""
 private val bossGrid = arrayOf(
     arrayOf("$karanda&$kutum",
@@ -159,6 +160,61 @@ class BossHelper private constructor() {
             }else{
                 bossOneImageResource = imageMap[name]
             }
+        }
+    }
+
+    class SettingDuoState(private val name: String,private var enabled: Boolean = true){
+        fun toggle(sharedPreferences: SharedPreferences): Boolean {
+            enabled = !enabled
+            sharedPreferences.edit().putBoolean(name,enabled).apply()
+            return enabled
+        }
+
+        fun update(sharedPreferences: SharedPreferences): Boolean {
+            enabled = sharedPreferences.getBoolean(name,true)
+            return enabled
+        }
+    }
+
+    class SettingTriState(private val name: String, private var id: Int = -1, private var state: Int = 1){
+        fun toggle(sharedPreferences: SharedPreferences): Int {
+            state = (state+1)%3
+            sharedPreferences.edit().putInt(name,state).apply()
+            if (id >= 0){
+                sharedPreferences.edit().putInt(name+"Id",id).apply()
+            }
+            return state
+        }
+
+        fun update(sharedPreferences: SharedPreferences): Int {
+            state = sharedPreferences.getInt(name,1)
+            id = sharedPreferences.getInt(name+"Id",-1)
+            return state
+        }
+    }
+
+    class SettingDuplexState(private val name: String, var stateOne: Int = 1, var stateTwo: Int = 1){
+        fun set(sharedPreferences: SharedPreferences, stateOne: Int, stateTwo: Int) {
+            this.stateOne = stateOne
+            this.stateTwo = stateTwo
+            sharedPreferences.edit().putInt(name+"1",stateOne).apply()
+            sharedPreferences.edit().putInt(name+"2",stateTwo).apply()
+        }
+
+        fun update(sharedPreferences: SharedPreferences) {
+            stateOne = sharedPreferences.getInt(name+"1",1)
+            stateTwo = sharedPreferences.getInt(name+"2",1)
+        }
+    }
+
+    class SettingFreeState(private val name: String, var state: Int = 0){
+        fun set(sharedPreferences: SharedPreferences, state: Int) {
+            this.state = state
+            sharedPreferences.edit().putInt(name,state).apply()
+        }
+
+        fun update(sharedPreferences: SharedPreferences) {
+            state = sharedPreferences.getInt(name,0)
         }
     }
 }

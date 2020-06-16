@@ -104,6 +104,7 @@
         android:layout_height="99dp"
         android:background="@drawable/button_transparent"
         android:padding="5dp"
+        android:onClick="executeTest"
         app:layout_constraintBottom_toTopOf="@+id/main_image_parley_reduction"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

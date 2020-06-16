@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.os.AsyncTask
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import com.scythetec.bdobosstimer.R
 import com.scythetec.bdobosstimer.helper.BossHelper
 
@@ -43,12 +42,13 @@ class BossAlertService : Service() {
 
         var soundsPlayed = 0
         override fun doInBackground(vararg params: Void?): Void?{
+            val limitMin = 124
             while (true){
                 val nextBoss = BossHelper.instance.getNextBoss()
-                if (nextBoss.minutesToSpawn < 10 && soundsPlayed < 3){
+                if (nextBoss.minutesToSpawn <= limitMin && soundsPlayed < 3){
                     soundsPlayed++
                     mediaPlayer?.start()
-                }else if (nextBoss.minutesToSpawn > 10 ){
+                } else if (nextBoss.minutesToSpawn > limitMin ){
                     soundsPlayed = 0
                 }
                 Thread.sleep(10000)

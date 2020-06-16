@@ -7,5 +7,9 @@
         android:right="2dp"
         android:bottom="2dp" />
     <corners android:radius="10dp" />
-    <solid android:color="@color/white" />
+    <gradient
+        android:angle="180"
+        android:startColor="@color/black"
+        android:centerColor="@color/white"
+        android:endColor="@color/black"/>
 </shape>

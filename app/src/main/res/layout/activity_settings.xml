@@ -4,23 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:weightSum="2">
+    android:weightSum="3">
 
 
     <LinearLayout
         android:id="@+id/settings_linear_bosses"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:weightSum="9"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/settings_linear_days"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1">
 
         <ImageView
             android:id="@+id/settings_image_boss_setting_kzarka"
@@ -42,8 +36,8 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:contentDescription="@string/image"
-            android:padding="5dp"
             android:onClick="onBossSettingChanged"
+            android:padding="5dp"
             app:srcCompat="@drawable/karanda_big" />
 
         <ImageView
@@ -54,6 +48,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
             android:padding="5dp"
             app:srcCompat="@drawable/kutum_big" />
 
@@ -77,6 +72,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
             android:padding="5dp"
             app:srcCompat="@drawable/offin_big" />
 
@@ -100,6 +96,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:contentDescription="@string/image"
+            android:onClick="onBossSettingChanged"
             android:padding="5dp"
             app:srcCompat="@drawable/quint_big" />
 
@@ -129,20 +126,89 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/settings_linear_days"
-        android:layout_width="100dp"
+        android:id="@+id/settings_linear_numbers"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginLeft="100dp"
         android:orientation="vertical"
         android:weightSum="12"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/settings_linear_bosses"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/settings_text_alert_before"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Alert how many minutes prior?"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/settings_number_alert_before"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:inputType="numberSigned"/>
+
+        <TextView
+            android:id="@+id/settings_text_alert_times"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Fire alert how many times?"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/settings_number_alert_times"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:inputType="numberSigned"/>
+
+        <TextView
+            android:id="@+id/settings_text_alert_delay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="How many seconds between alerts?"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/settings_number_alert_delay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:inputType="numberSigned"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settings_linear_days"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="12"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/settings_button_monday"
@@ -236,7 +302,7 @@
             android:textAlignment="center"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Do not Disturb between"
+            android:text="Do not disturb between"
             android:padding="5dp" />
 
         <TimePicker
@@ -244,7 +310,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/button_black_white"
+            android:background="@color/white"
+            android:layout_marginStart="-15dp"
             android:timePickerMode="spinner"/>
 
         <TextView
@@ -263,7 +330,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/button_black_white"
+            android:background="@color/white"
+            android:layout_marginStart="-15dp"
             android:timePickerMode="spinner"/>
 
         <TextView
