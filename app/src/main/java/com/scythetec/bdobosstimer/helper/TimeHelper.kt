@@ -56,7 +56,7 @@ class TimeHelper {
         val calendar = Calendar.getInstance()
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
         val minuteOfTheDay = calendar.get(Calendar.MINUTE)
-        return hourOfDay*100+ ceil(minuteOfTheDay*1.6667).toInt()
+        return sixtyToHundredFormat(hourOfDay,minuteOfTheDay)
     }
 
     fun getTimeDifference(time: Int, now: Int) = ((if (time>2400 && time-now>2400) (time%2400-now) else (time - now)) * 0.6).toInt()
@@ -69,6 +69,10 @@ class TimeHelper {
         val hoursStr = if (hours<10) "0$hours" else "$hours"
         val minutesStr = if (minutes<10) "0$minutes" else "$minutes"
         return "$hoursStr:$minutesStr"
+    }
+
+    fun sixtyToHundredFormat(hours: Int, minutes: Int): Int {
+        return hours*100+ ceil(minutes*1.6667).toInt()
     }
 
 }

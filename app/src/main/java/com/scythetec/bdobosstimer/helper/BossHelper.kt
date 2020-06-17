@@ -2,19 +2,19 @@ package com.scythetec.bdobosstimer.helper
 
 import android.content.SharedPreferences
 import com.scythetec.bdobosstimer.R
+import com.scythetec.bdobosstimer.function.Constants.Companion.empty
+import com.scythetec.bdobosstimer.function.Constants.Companion.garmoth
+import com.scythetec.bdobosstimer.function.Constants.Companion.karanda
+import com.scythetec.bdobosstimer.function.Constants.Companion.kutum
+import com.scythetec.bdobosstimer.function.Constants.Companion.kzarka
+import com.scythetec.bdobosstimer.function.Constants.Companion.muraka
+import com.scythetec.bdobosstimer.function.Constants.Companion.nouver
+import com.scythetec.bdobosstimer.function.Constants.Companion.offin
+import com.scythetec.bdobosstimer.function.Constants.Companion.quint
+import com.scythetec.bdobosstimer.function.Constants.Companion.vell
 
 private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15")
 private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
-const val kzarka = "Kzarka"
-const val karanda = "Karanda"
-const val nouver = "Nouver"
-const val kutum = "Kutum"
-const val garmoth = "Garmoth"
-const val offin = "Offin"
-const val vell = "Vell"
-const val quint = "Quint"
-const val muraka = "Muraka"
-private const val empty = ""
 private val bossGrid = arrayOf(
     arrayOf("$karanda&$kutum",
         karanda,
@@ -174,6 +174,15 @@ class BossHelper private constructor() {
             enabled = sharedPreferences.getBoolean(name,true)
             return enabled
         }
+
+        fun updateSelf(sharedPreferences: SharedPreferences): SettingDuoState{
+            update(sharedPreferences)
+            return this
+        }
+
+        fun get(): Boolean{
+            return enabled
+        }
     }
 
     class SettingTriState(private val name: String, private var id: Int = -1, private var state: Int = 1){
@@ -191,6 +200,15 @@ class BossHelper private constructor() {
             id = sharedPreferences.getInt(name+"Id",-1)
             return state
         }
+
+        fun updateSelf(sharedPreferences: SharedPreferences): SettingTriState{
+            update(sharedPreferences)
+            return this
+        }
+
+        fun get(): Int{
+            return state
+        }
     }
 
     class SettingDuplexState(private val name: String, var stateOne: Int = 1, var stateTwo: Int = 1){
@@ -205,6 +223,19 @@ class BossHelper private constructor() {
             stateOne = sharedPreferences.getInt(name+"1",1)
             stateTwo = sharedPreferences.getInt(name+"2",1)
         }
+
+        fun updateSelf(sharedPreferences: SharedPreferences): SettingDuplexState{
+            update(sharedPreferences)
+            return this
+        }
+
+        fun getOne(): Int{
+            return stateOne
+        }
+
+        fun getTwo(): Int{
+            return stateTwo
+        }
     }
 
     class SettingFreeState(private val name: String, var state: Int = 0){
@@ -215,6 +246,15 @@ class BossHelper private constructor() {
 
         fun update(sharedPreferences: SharedPreferences) {
             state = sharedPreferences.getInt(name,0)
+        }
+
+        fun updateSelf(sharedPreferences: SharedPreferences): SettingFreeState{
+            update(sharedPreferences)
+            return this
+        }
+
+        fun get(): Int{
+            return state
         }
     }
 }

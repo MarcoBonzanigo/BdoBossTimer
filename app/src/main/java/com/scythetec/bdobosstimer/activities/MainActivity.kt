@@ -2,7 +2,6 @@ package com.scythetec.bdobosstimer.activities
 
 import android.app.Activity
 import android.app.ActivityManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -19,6 +18,7 @@ import androidx.core.content.ContextCompat.startForegroundService
 import com.scythetec.bdobosstimer.R
 import com.scythetec.bdobosstimer.activities.MainActivity.BossRefresher
 import com.scythetec.bdobosstimer.function.BossAlertService
+import com.scythetec.bdobosstimer.function.Constants.Companion.updateMessage
 import com.scythetec.bdobosstimer.function.getHtmlSpannedString
 import com.scythetec.bdobosstimer.helper.BossHelper
 import com.scythetec.bdobosstimer.helper.ImperialHelper
@@ -42,41 +42,25 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         supportActionBar?.hide()
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences(
-            id, Context.MODE_PRIVATE)
+            id, Context.MODE_PRIVATE
+        )
         checkAndRunAlertService()
     }
 
-    private fun isMyServiceRunning(): Boolean {
-        var serviceCounter = 0
-        val am = this.getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager
-        val rs = am.getRunningServices(50)
-        for (runningServiceInfo in rs) {
-            if (runningServiceInfo.service.className == BossAlertService::class.java.name) {
-                serviceCounter++
-            }
-        }
-        return serviceCounter>0
-    }
-
-    val updateMessage = "ConfigurationMessage"
     private fun communicateWithService() {
-        val pendingResult = createPendingResult(
-            100, Intent(), 0
-        )
-        val intent = Intent(applicationContext, BossAlertService::class.java)
-        intent.putExtra(updateMessage, true)
-        startService(intent)
+        val serviceIntent = Intent(applicationContext, BossAlertService::class.java)
+        serviceIntent.putExtra(updateMessage,SettingsActivity.createSettingsObject(sharedPreferences))
+        startService(serviceIntent)
     }
 
     private fun checkAndRunAlertService() {
-        stopService(Intent(this, BossAlertService::class.java))
         val intent = Intent(applicationContext, BossAlertService::class.java)
-//        if (isMyServiceRunning()) {
-//        }
         startForegroundService(this,intent)
     }
 
@@ -88,6 +72,7 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity {
     override fun onResume() {
         super.onResume()
         synchronize()
+        communicateWithService()
     }
 
     private fun cancelRefresher() {
@@ -291,8 +276,9 @@ class MainActivity : AppCompatActivity(), SynchronizedActivity {
         }
     }
 
-    fun executeTest(view: View) {
+    fun executeTest(@Suppress("UNUSED_PARAMETER") view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
     }
 
