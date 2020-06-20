@@ -1,5 +1,6 @@
 package com.scythetec.bdobosstimer
 
+import com.scythetec.bdobosstimer.activities.SettingsActivity
 import com.scythetec.bdobosstimer.helper.BossHelper
 import com.scythetec.bdobosstimer.helper.TimeHelper
 import org.junit.Test
@@ -19,5 +20,25 @@ class BossHelperTest {
             }
         }
         TimeHelper.instance.setNormal()
+    }
+
+    @Test
+    fun testBossSettings(){
+        TimeHelper.instance.setDebug(1199,0)
+        val disabledSettings = SettingsActivity.createTestSettingsObject()
+        val nextBoss = BossHelper.instance.getNextBoss()
+        var soundsPlayed = 0
+        assertFalse(BossHelper.instance.checkAlertAllowed(nextBoss,disabledSettings,soundsPlayed))
+        disabledSettings.monday = 1
+        assertFalse(BossHelper.instance.checkAlertAllowed(nextBoss,disabledSettings,soundsPlayed))
+        disabledSettings.offin = true
+        assertTrue(BossHelper.instance.checkAlertAllowed(nextBoss,disabledSettings,soundsPlayed))
+        soundsPlayed = 10
+        assertFalse(BossHelper.instance.checkAlertAllowed(nextBoss,disabledSettings,soundsPlayed))
+        soundsPlayed = 0
+        disabledSettings.timeFrom = 1000
+        disabledSettings.timeTo = 1300
+        disabledSettings.monday = 2
+        assertFalse(BossHelper.instance.checkAlertAllowed(nextBoss,disabledSettings,soundsPlayed))
     }
 }

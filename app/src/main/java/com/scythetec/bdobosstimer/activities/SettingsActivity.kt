@@ -38,6 +38,7 @@ import com.scythetec.bdobosstimer.function.Constants.Companion.wednesday
 import com.scythetec.bdobosstimer.function.getHtmlSpannedString
 import com.scythetec.bdobosstimer.helper.BossHelper
 import com.scythetec.bdobosstimer.helper.BossSettings
+import com.scythetec.bdobosstimer.helper.BossTestSettings
 import com.scythetec.bdobosstimer.helper.TimeHelper
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -216,6 +217,32 @@ class SettingsActivity:  AppCompatActivity() {
                 BossHelper.SettingFreeState(alertTimes).updateSelf(sharedPreferences).get(),
                 BossHelper.SettingFreeState(alertDelay).updateSelf(sharedPreferences).get(),
                 BossHelper.SettingDuoState(vibration).updateSelf(sharedPreferences).get()
+            )
+        }
+        fun createTestSettingsObject(): BossTestSettings {
+            return BossTestSettings(
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                0,
+                2399,
+                15,
+                5,
+                5,
+                false
             )
         }
     }

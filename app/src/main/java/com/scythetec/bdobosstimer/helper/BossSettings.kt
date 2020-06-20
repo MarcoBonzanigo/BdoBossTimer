@@ -27,7 +27,7 @@ class BossSettings(
     val alertTimes: Int,
     val alertDelay: Int,
     val vibration: Boolean
-): Parcelable {
+): IBossSettings, Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),

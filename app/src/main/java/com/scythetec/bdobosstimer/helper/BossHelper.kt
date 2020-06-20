@@ -12,6 +12,7 @@ import com.scythetec.bdobosstimer.function.Constants.Companion.nouver
 import com.scythetec.bdobosstimer.function.Constants.Companion.offin
 import com.scythetec.bdobosstimer.function.Constants.Companion.quint
 import com.scythetec.bdobosstimer.function.Constants.Companion.vell
+import com.scythetec.bdobosstimer.function.nvl
 
 private val timeGrid = arrayOf("00:15","02:00","05:00","09:00","12:00","16:00","19:00","22:15","23:15")
 private val timeIntGrid = arrayOf(25,200,500,900,1200,1600,1900,2225,2325)
@@ -256,6 +257,58 @@ class BossHelper private constructor() {
         fun get(): Int{
             return state
         }
+    }
+
+    @Suppress("ConvertTwoComparisonsToRangeCheck")
+    fun checkAlertAllowed(nextBoss: Boss, iBossSettings: IBossSettings?, soundsPlayed: Int): Boolean {
+        val bossSettings = iBossSettings?.toBossSettings()
+        val limitMin = nvl(bossSettings?.alertBefore, 15)
+        //time to spawn
+        if (nextBoss.minutesToSpawn > limitMin || soundsPlayed >= nvl(bossSettings?.alertTimes, 3)){
+            return false
+        }
+        //check weekday
+        var state = -1
+        when (TimeHelper.instance.getDayOfTheWeek()){
+            0 -> state = nvl(bossSettings?.monday,1)
+            1 -> state = nvl(bossSettings?.tuesday,1)
+            2 -> state = nvl(bossSettings?.wednesday,1)
+            3 -> state = nvl(bossSettings?.thursday,1)
+            5 -> state = nvl(bossSettings?.friday,1)
+            4 -> state = nvl(bossSettings?.saturday,1)
+            6 -> state = nvl(bossSettings?.sunday,1)
+        }
+        //disabled
+        if (state == 3){
+            return false
+        }
+        //check time
+        if (state == 2){
+            val timeFrom = nvl(bossSettings?.timeFrom, 0)
+            val timeTo = nvl(bossSettings?.timeTo, 0)
+            val timeOfTheDay = TimeHelper.instance.getTimeOfTheDay()
+            if (timeFrom < timeTo){
+                //normal case
+                if (timeOfTheDay > timeFrom && timeOfTheDay < timeTo){
+                    return false
+                }
+            }else if (timeFrom > timeTo){
+                if (timeOfTheDay < timeFrom && timeOfTheDay > timeTo){
+                    return false
+                }
+            }
+            //else, probably no time set, continue
+        }
+        //also continue for state 1
+        //check boss
+        val bosses = nextBoss.name.split("&")
+        var enabled = false
+        for (boss in bosses){
+            if (nvl(bossSettings?.getEnabledBosses(), emptyList()).contains(boss)){
+                enabled = true
+            }
+        }
+        return enabled
     }
 }
 

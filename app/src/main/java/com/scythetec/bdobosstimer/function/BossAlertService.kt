@@ -8,7 +8,6 @@ import com.scythetec.bdobosstimer.R
 import com.scythetec.bdobosstimer.function.Constants.Companion.updateMessage
 import com.scythetec.bdobosstimer.helper.BossHelper
 import com.scythetec.bdobosstimer.helper.BossSettings
-import com.scythetec.bdobosstimer.helper.TimeHelper
 
 
 class BossAlertService : Service() {
@@ -56,7 +55,7 @@ class BossAlertService : Service() {
             val limitMin = nvl(bossSettings?.alertBefore, 15)
             while (true){
                 val nextBoss = BossHelper.instance.getNextBoss()
-                if (checkAlertAllowed(nextBoss, bossSettings)){
+                if (BossHelper.instance.checkAlertAllowed(nextBoss, bossSettings, soundsPlayed)){
                     mediaPlayer?.seekTo(0)
                     mediaPlayer?.start()
                     vibrate()
@@ -66,57 +65,6 @@ class BossAlertService : Service() {
                 }
                 Thread.sleep(1000L * nvl(bossSettings?.alertDelay,10))
             }
-        }
-
-        @Suppress("ConvertTwoComparisonsToRangeCheck")
-        private fun checkAlertAllowed(nextBoss: BossHelper.Boss, bossSettings: BossSettings?): Boolean {
-            val limitMin = nvl(bossSettings?.alertBefore, 15)
-            //time to spawn
-            if (nextBoss.minutesToSpawn > limitMin || soundsPlayed >= nvl(bossSettings?.alertTimes, 3)){
-                return false
-            }
-            //check weekday
-            var state = -1
-            when (TimeHelper.instance.getDayOfTheWeek()){
-                0 -> state = nvl(bossSettings?.monday,1)
-                1 -> state = nvl(bossSettings?.tuesday,1)
-                2 -> state = nvl(bossSettings?.wednesday,1)
-                3 -> state = nvl(bossSettings?.thursday,1)
-                5 -> state = nvl(bossSettings?.friday,1)
-                4 -> state = nvl(bossSettings?.saturday,1)
-                6 -> state = nvl(bossSettings?.sunday,1)
-            }
-            //disabled
-            if (state == 3){
-                return false
-            }
-            //check time
-            if (state == 2){
-                val timeFrom = nvl(bossSettings?.timeFrom, 0)
-                val timeTo = nvl(bossSettings?.timeTo, 0)
-                val timeOfTheDay = TimeHelper.instance.getTimeOfTheDay()
-                if (timeFrom < timeTo){
-                    //normal case
-                    if (timeOfTheDay < timeFrom || timeOfTheDay > timeTo){
-                        return false
-                    }
-                }else if (timeFrom > timeTo){
-                    if (timeOfTheDay < timeFrom && timeOfTheDay > timeTo){
-                        return false
-                    }
-                }
-                //else, probably no time set, continue
-            }
-            //also continue for state 1
-            //check boss
-            val bosses = nextBoss.name.split("&")
-            var enabled = false
-            for (boss in bosses){
-                if (nvl(bossSettings?.getEnabledBosses(), emptyList()).contains(boss)){
-                    enabled = true
-                }
-            }
-            return enabled
         }
 
         private fun vibrate() {
